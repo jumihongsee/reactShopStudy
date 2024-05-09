@@ -15,13 +15,17 @@ function App() {
 
   let [shoes] = useState(data);
 
-  console.log(shoes)
+  console.log()
 
+  // 숙제 ~
+  // 상품 div를 컴포넌트 화
+  // 데이터 바인딩 해놓기 
+  // map으로 반복문 돌리기 
 
   return (
+    
     <div className="App">
-
- 
+      
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
           <Navbar.Brand href="#home">ZoomShop</Navbar.Brand>
@@ -38,8 +42,8 @@ function App() {
       <Row>
         <Col>
           <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%"/>
-          <h4>상품명</h4>
-          <p>상품설명</p>
+          <h4>{shoes[0].title}</h4>
+          <p>{shoes[0].price}</p>
         </Col>
         <Col>
           <img src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%"/>
