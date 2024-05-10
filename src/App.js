@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar , Container, Nav, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import data from './data.js'
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import DetailPage from './pages/detail.js';
 //import backgroundImg from './img/shop-bg.png';
 
 import './App.css';
@@ -14,52 +16,129 @@ function App() {
 
 
   let [shoes] = useState(data);
+  let navigate = useNavigate(); //use가 붙어있는 함수는 훅임 유용한 것들이 들어있씀 ~
 
-  console.log()
-
-  // 숙제 ~
-  // 상품 div를 컴포넌트 화
-  // 데이터 바인딩 해놓기 
-  // map으로 반복문 돌리기 
+ 
 
   return (
     
     <div className="App">
+
       
       <Navbar bg="dark" data-bs-theme="dark">
         <Container>
-          <Navbar.Brand href="#home">ZoomShop</Navbar.Brand>
+          <Navbar.Brand href="#home" onClick={()=>{ navigate('/') }}>ZoomShop</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#home">Cart</Nav.Link>
+            {/* <Link to='/' style={{marginRight : '10px'}}>Home</Link>  */}
+            <Nav.Link onClick={()=>{ navigate('/') }}>Home</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate('/detail') }}>Detail</Nav.Link>
+            {/* <Nav.Link onClick={()=>{ navigate(1) }}>앞으로</Nav.Link>
+            <Nav.Link onClick={()=>{ navigate(-1) }}>뒤로</Nav.Link> */}
           </Nav>
         </Container>
       </Navbar>
       {/* <div className='main-bg' style={{backgroundImage : `url(${backgroundImg})`}}></div> */}
       <div className='main-bg' style={{backgroundImage : `url(${process.env.PUBLIC_URL}/shop-bg.png)`}}></div>
+      
+      <Routes>
+        <Route path="/" element={     
+         <Container>
 
-      <Container>
-      <Row>
-        <Col>
-          <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="80%"/>
-          <h4>{shoes[0].title}</h4>
-          <p>{shoes[0].price}</p>
-        </Col>
-        <Col>
-          <img src="https://codingapple1.github.io/shop/shoes2.jpg" width="80%"/>
-          <h4>상품명</h4>
-          <p>상품설명</p>
-        </Col>
-        <Col>
-          <img src="https://codingapple1.github.io/shop/shoes3.jpg" width="80%"/>
-          <h4>상품명</h4>
-          <p>상품설명</p>
-        </Col>
-      </Row>
-    </Container>
+            <Row>
+
+              {
+                shoes.map((a,i)=>{
+                  return(
+                    <Goods
+                      i={i}
+                      shoes={shoes}
+                      navigate={navigate}
+                    ></Goods>
+                  )
+                })
+              }
+
+            </Row>
+          </Container>
+        } />
+
+        {/* { 페이지를 여러개 만들고 싶으면?? url 파라미터 } */}
+        <Route path="/detail/:id" element={<DetailPage shoes={shoes} navigate={navigate} />}/>
+
+
+
+
+        <Route path="*" element={<>없는 페이지입니다.(404)</>}/> {/* '*' : 이외에 모든 것 이라는 뜻 */}
+
+        {/* Nested Routes 접속시엔 elment 2개나 보여줌
+            /Nested된 엘리먼트들을 어디 보여줄지 정하려면 <Outlet> 사용
+            /여러 유사한 페이지 필요할 때 사용 
+        */}
+        <Route path="/about" element={<About />}>
+          <Route path="member" element={<>맴버임</>}/>
+          <Route path="location" element={<>위치 정보임</>}/>
+        </Route>
+
+        <Route path='/event' element={<Event />}>
+        <Route path="one" element={<>첫 주문시 양배추즙 서비스</>}/>
+          <Route path="two" element={<>생일기념 쿠폰받기</>}/>
+        </Route>
+
+
+        {/* Nested Routes */}
+
+
+        {/* 
+        <Route path="/about/member" element={<About />}/>
+        <Route path="/about/location" element={<About />}/> */}
+
+
+        {/* <Route path="/about" element={<>어바웃페이지임</>}/> */}
+      </Routes>
+
 
     </div>
   );
+} // App() end
+
+
+
+function Goods(props){
+
+  return(
+    
+    <>
+      <Col onClick={()=>{props.navigate(`/detail/${props.shoes[props.i].id}`)}}>
+        <img src={`https://codingapple1.github.io/shop/shoes${props.i + 1}.jpg`} width="80%"/>
+        <h4>{props.shoes[props.i].title}</h4>
+        <p>{props.shoes[props.i].price}</p>
+      </Col>
+    </>
+  )
+
 }
+
+function About(){
+
+  return(
+    <>
+      <h4>회사정보임</h4>
+      <Outlet></Outlet>
+    </>
+  )
+
+}
+
+function Event(){
+  return(
+    <>
+      <h4>오늘의 이벤트</h4>
+      <Outlet></Outlet>
+    </>
+  )
+}
+
+
+
 
 export default App;
