@@ -4,6 +4,8 @@ import { useState } from 'react';
 import data from './data.js'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import DetailPage from './pages/detail.js';
+
+
 //import backgroundImg from './img/shop-bg.png';
 
 import './App.css';
