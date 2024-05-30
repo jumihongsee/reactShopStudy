@@ -6,7 +6,7 @@ import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import DetailPage from './pages/detail.js';
 import axios from 'axios';
 import './App.css';
-export let Context1 = createContext()
+export let Context1 = createContext();
 
 
 //import backgroundImg from './img/shop-bg.png';
