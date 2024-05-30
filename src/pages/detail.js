@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import {  Nav, } from 'react-bootstrap';
+import '../../src/App.css'
+
 //import styled from 'styled-components'; 
 
 // let YellowBtn =  styled.button `
@@ -20,6 +21,8 @@ function DetailPage(props){
     let [count, setCount] = useState(0);
     let [num, setNum] = useState('')
     let [탭, 탭변경] = useState(0)
+
+    let [fade, setFade] = useState(0)
 
 
     let {id} = useParams();
@@ -43,14 +46,19 @@ function DetailPage(props){
         let timer = 
         setTimeout(()=>{
             setAlert(false)
-        }, 2000)
+        }, 2000);
+
+        let fadeTimer = 
+        setTimeout(()=>{
+            setFade('end')
+        },100)
         
         return ()=>{
             
 
             //useEffect가 실행이 되기전에 실행되는 코드 clean up function 
             // 기존 타이머는 제거해 주세여 
-            clearTimeout(timer)
+            clearTimeout(timer, fadeTimer)
             
 
         }
@@ -72,7 +80,7 @@ function DetailPage(props){
    
     return(
 
-        <div className="container">
+        <div className={`container start ${fade}`}>
             {/* <Box></Box> */}
             {
                 alert === true ? 
@@ -118,7 +126,27 @@ function DetailPage(props){
 
 function TabContent({탭}){ // props.가 귀찮으면 {} 중괄호안에 전송할 데이터를 ㄱㄱ
     
-    return  [<div>내용 0</div>, <div>내용 1</div>, <div>내용 2</div>][탭]
+    let [fade, setFade] = useState('');
+
+
+    useEffect(()=>{ // 탭에 변경이 있으면 end 라는 클래스를 붙여라 다만 0.1초뒤에 ㅋ
+      let time =   setTimeout(()=>{
+            setFade('end')
+        },100)
+
+        return ()=>{ // 탭에 변경이 없으면 공백으로 바꿔
+            clearTimeout(time)
+            setFade('')
+        }
+
+    }, [탭]) // 탭이라는게 변경될 떄마다 안의 코드 실행
+
+    return (
+        <div className={`start ${fade}`}>
+          { [<div>내용0</div>, <div>내용1</div>, <div>내용2</div>][탭] }
+        </div>
+      )
+
 }
 
 
