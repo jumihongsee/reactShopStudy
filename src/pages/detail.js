@@ -16,6 +16,9 @@ function DetailPage(props){
 
     let [alert, setAlert] = useState(true); 
     let [count, setCount] = useState(0);
+    let [num, setNum] = useState('')
+
+
 
     let {id} = useParams();
     // console.log(id) // 0
@@ -24,6 +27,8 @@ function DetailPage(props){
     let 찾는상품 = props.shoes.find(function(x){
         return x.id == id
     });
+
+
 
 
     useEffect(()=>{
@@ -48,9 +53,16 @@ function DetailPage(props){
 
         }
 
+
+
     },[ count ]) // useEffect 실행조건 넣을 수 있는 곳은 []
 
 
+    useEffect(()=>{
+        if(isNaN(num)== true){
+            console.log('숫자가아님~')
+        }
+    }, [num])
 
 
 
@@ -69,6 +81,9 @@ function DetailPage(props){
             <div className="row">
                 <div className="col-md-6">
                 <img src={`https://codingapple1.github.io/shop/shoes${(props.shoes[id].id) + 1}.jpg`} width="100%" />
+                    <InputNumber
+                        setNum={setNum}
+                    />
                 </div>
                 <div className="col-md-6">
                 <h4 className="pt-5">{찾는상품.title}</h4>
@@ -77,7 +92,7 @@ function DetailPage(props){
                 <button className="btn btn-danger">주문하기</button> 
                 {/* <YellowBtn bg="blue">버튼</YellowBtn> */}
            
-             
+               
                 </div>
             </div>
         </div> 
@@ -92,6 +107,18 @@ function Alert(){
         <div className="alert alert-warning">
             2초이내 구매시 할인
         </div>
+    )
+}
+
+function InputNumber({setNum}){
+    return(
+        <>
+            <input
+                type="text"
+                onChange={(e)=>{setNum(e.target.value)}}
+             ></input>
+           
+        </>
     )
 }
 

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import data from './data.js'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import DetailPage from './pages/detail.js';
+import axios, { Axios } from 'axios';
 
 
 //import backgroundImg from './img/shop-bg.png';
@@ -17,10 +18,11 @@ function App() {
   //Public 폴더 이미지 사용하는 권장 방식  <img src={process.env.PUBLIC_URL + '/logo192.png'} /> 
 
 
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate(); //use가 붙어있는 함수는 훅임 유용한 것들이 들어있씀 ~
+  let [buttonCount, setButtonCount] = useState(1);
+  let [loading, setLoading] = useState(true)
 
- 
 
   return (
     
@@ -59,6 +61,58 @@ function App() {
                   )
                 })
               }
+              {
+                loading === true ? <Loading></Loading> : null
+              }
+           
+
+            <button onClick={()=>{
+              setButtonCount(buttonCount + 1)
+              console.log(buttonCount);
+              if(buttonCount < 3){
+                axios.get('https://codingapple1.github.io/shop/data3.json')
+
+                .then((result)=>{
+                  //로딩중 UI  띄우기
+                  setLoading(true)
+
+
+                    let copyShoes = [...shoes]
+                    // 혹은 let copy = [...shoes, ...result.data];
+                    console.log(copyShoes);
+                    let addShoes = copyShoes.concat(result.data);
+                    setShoes(addShoes);
+                    //로딩중 UI 숨기기  
+                    setLoading(false)
+                    // 응용 1. 버튼 2회 누를때는 7,8,9번 상품 가져오려면? // 유저가 버튼누른 횟수를 저장해놓으면 좋음 
+                    
+                    // 응용 2. 버튼을 3번 못 누르게 하는 방법은 ? 
+  
+                    // 응용 3. 버튼 누르면 로딩중입니다 글자 띄우기
+  
+  
+                })
+                .catch(()=>{
+                  console.log('실패')
+                  //로딩중 UI 숨기기  
+                  setLoading(false)
+  
+                })
+  
+              }
+              
+
+             // ** 데이터를 보내고 싶으면 post
+             // axios.post('URL',{name:'kim'})
+
+             // ** 동시에 ajax 요청 여러개 하려면 ? 
+            // Promise.all( [axios.get('URL1'), axios.get('URL2')] )
+
+ 
+
+
+            }}>버튼</button>
+
 
             </Row>
           </Container>
@@ -99,6 +153,7 @@ function App() {
       </Routes>
 
 
+
     </div>
   );
 } // App() end
@@ -118,6 +173,15 @@ function Goods(props){
     </>
   )
 
+}
+
+function Loading(){
+  
+  return(
+    <>
+      <p>로딩중임</p>
+    </>
+  )
 }
 
 function About(){
