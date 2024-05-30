@@ -73,6 +73,8 @@ function App() {
                 axios.get('https://codingapple1.github.io/shop/data3.json')
 
                 .then((result)=>{
+
+                  
                   //로딩중 UI  띄우기
                   setLoading(true)
 

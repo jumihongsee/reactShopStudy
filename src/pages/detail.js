@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+
+import {  Nav, } from 'react-bootstrap';
 //import styled from 'styled-components'; 
 
 // let YellowBtn =  styled.button `
@@ -17,7 +19,7 @@ function DetailPage(props){
     let [alert, setAlert] = useState(true); 
     let [count, setCount] = useState(0);
     let [num, setNum] = useState('')
-
+    let [탭, 탭변경] = useState(0)
 
 
     let {id} = useParams();
@@ -91,15 +93,35 @@ function DetailPage(props){
                 <p>{찾는상품.price}</p>
                 <button className="btn btn-danger">주문하기</button> 
                 {/* <YellowBtn bg="blue">버튼</YellowBtn> */}
-           
-               
                 </div>
             </div>
+            <Nav variant="tabs"  defaultActiveKey="link0">
+                <Nav.Item>
+                <Nav.Link eventKey="link0" onClick={()=>{탭변경(0)}}>버튼0</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                <Nav.Link eventKey="link1" onClick={()=>{탭변경(1)}}>버튼1</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                <Nav.Link eventKey="link2" onClick={()=>{탭변경(2)}}>버튼2</Nav.Link>
+                </Nav.Item>
+            </Nav>
+            <TabContent 탭={탭}></TabContent>
+         
+
+
         </div> 
 
     )
 
 }
+
+function TabContent({탭}){ // props.가 귀찮으면 {} 중괄호안에 전송할 데이터를 ㄱㄱ
+    
+    return  [<div>내용 0</div>, <div>내용 1</div>, <div>내용 2</div>][탭]
+}
+
+
 
 function Alert(){
 
