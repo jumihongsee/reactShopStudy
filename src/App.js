@@ -3,8 +3,9 @@ import { Navbar , Container, Nav, Row, Col } from 'react-bootstrap';
 import { useState } from 'react';
 import data from './data.js'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
-import DetailPage from './pages/detail.js';
+import DetailPage from './pages/Detail.js';
 import axios, { Axios } from 'axios';
+import Cart from './pages/Cart.js';
 
 
 //import backgroundImg from './img/shop-bg.png';
@@ -119,6 +120,10 @@ function App() {
             </Row>
           </Container>
         } />
+
+
+        <Route path='/cart' element={ <Cart />} />
+
 
         {/* { 페이지를 여러개 만들고 싶으면?? url 파라미터 } */}
         <Route path="/detail/:id" element={<DetailPage shoes={shoes} navigate={navigate} />}/>
