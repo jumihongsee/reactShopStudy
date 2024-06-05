@@ -1,11 +1,11 @@
 import { Table } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import {  agePlus } from "./../store/userSlice.js"
-import { stockUp } from "../store.js"
+import { stockUp } from "./../store.js"
 
 function Cart(){
-
-    let a = useSelector((state)=>{return state })
+          //useSelctor : store의 state를 가져와 주는 함수. 
+    let a = useSelector((state)=>{return state }) 
     let itemsStore = useSelector((state)=>{return state.items})
 
     //  갖고오고 싶은 스테이트만 갖고 올 수도 있음
@@ -24,7 +24,7 @@ function Cart(){
         <div>
             <p>{a.user.name}의 장바구니 <br/> 그는{a.user.age}살임</p>
             <button
-                onClick={()=>{dispatch(agePlus(2))}}
+                onClick={()=>{dispatch(agePlus(200))}}
             >버튼</button>
             <Table>
                 <thead>
@@ -44,9 +44,11 @@ function Cart(){
                                 <td>{itemsStore[i].name}</td>
                                 <td>{itemsStore[i].count}</td>
                                 <td><button onClick={()=>{
-                                    console.log(itemsStore[i].id)
-                                    
-                                    dispatch(stockUp(1))                                    
+                         
+                                        dispatch(stockUp({
+                                            id: a.id,
+                                            amount : 1
+                                        }))                              
                                     }}>+</button></td>
                             </tr>
                         </tbody>

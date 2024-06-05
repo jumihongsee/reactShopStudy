@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom";
 import {  Nav, } from 'react-bootstrap';
 import '../../src/App.css'
+import { addItem } from "../store";
 
 //import styled from 'styled-components'; 
 
@@ -32,6 +34,10 @@ function DetailPage(props){
     let 찾는상품 = props.shoes.find(function(x){
         return x.id == id
     });
+
+    let a = useSelector((state)=>{return state.items})
+    console.log(a)
+    let dispatch = useDispatch();
 
 
 
@@ -99,7 +105,16 @@ function DetailPage(props){
                 <h4 className="pt-5">{찾는상품.title}</h4>
                 <p>{찾는상품.content}</p>
                 <p>{찾는상품.price}</p>
-                <button className="btn btn-danger">주문하기</button> 
+                <button className="btn btn-danger"
+                    onClick={()=>{
+                        dispatch(addItem({
+                            id : 찾는상품.id,
+                            name : 찾는상품.title,
+                            count : 1
+                        }))
+                        console.log(찾는상품)
+                    }}
+                >주문하기</button> 
                 {/* <YellowBtn bg="blue">버튼</YellowBtn> */}
                 </div>
             </div>

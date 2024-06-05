@@ -16,9 +16,12 @@ import user from './store/userSlice.js'
 
 
 let stock = createSlice({
-    name : 'stock',
-    initialState : [10,11,12]
+    name : 'stock', // 1. 스테이트 이름 작명
+    initialState : [10,11,12] // 2. 실제 스테이트 값 넣기
 })
+
+
+//state 하나를 slice라고 부른다. 
 
 let items = createSlice({
     
@@ -30,12 +33,19 @@ let items = createSlice({
     ],
     reducers : {
         stockUp(state,action){
-            state.count += action
+            // state.count += action.payload
+            let item = state.find(item => item.id === action.payload.id);
+            if(item){
+                item.count += action.payload.amount;
+            }
+        },
+        addItem(state, action){
+            state.push(action.payload);
         }
     }
 })
 
-export let { stockUp } = items.actions
+export let { stockUp, addItem } = items.actions
 
 
 
@@ -43,7 +53,9 @@ export let { stockUp } = items.actions
 export default configureStore({
   reducer: { 
     
-    user :  user.reducer,
+    // 3.reducer에 등록 후 사용 
+
+    user :  user.reducer, //  4. 등록방법 : 변수 : 작명이름.reducer
     stock : stock.reducer,
     items : items.reducer
 
